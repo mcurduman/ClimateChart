@@ -61,7 +61,7 @@ const Auth = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
-        <CardHeader>
+        <CardHeader className="space-y-1 text-center">
           <CardTitle>ClimateChart</CardTitle>
           <CardDescription>Login or create an account to view climate data</CardDescription>
         </CardHeader>

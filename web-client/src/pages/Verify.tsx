@@ -45,14 +45,14 @@ const Verify = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Verify Your Account</CardTitle>
           <CardDescription>
             Enter the verification code sent to your email
             {currentUser && (
-              <div className="mt-2 rounded bg-muted p-2 text-xs">
+              <div className="mt-2 rounded p-2 text-xs">
                 <strong>Demo Code:</strong> {currentUser.verificationCode}
               </div>
             )}
