@@ -2,7 +2,6 @@ grpcio
 grpcio-tools
 protobuf
 googleapis-common-protos
-fastapi
 uvicorn
 pydantic
 PyJWT

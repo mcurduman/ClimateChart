@@ -12,7 +12,7 @@ PUBLIC_METHODS = {
     "/user.UserService/CreateApiKey",
     "/user.UserService/ListApiKeys",
     "/user.UserService/Logout",
-    "/weather.WeatherService/GetDaily",
+    "/weather.WeatherService/GetWeather",
 }
 
 def _get_md(md, key):
@@ -31,10 +31,11 @@ class AuthInterceptor(grpc.ServerInterceptor):
 
         if method in PUBLIC_METHODS:
             return continuation(details)
-        if method in API_KEY_METHODS:
-            if not _valid_api_key(api_key):
-                return self._deny("API key required")
-            return continuation(details)
+        # Will add more auth methods later
+        # if method in API_KEY_METHODS:
+        #     if not _valid_api_key(api_key):
+        #         return self._deny("API key required")
+        #     return continuation(details)
         return continuation(details)
 
     def _deny(self, msg):

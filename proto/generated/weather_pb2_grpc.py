@@ -34,8 +34,8 @@ class WeatherServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetDaily = channel.unary_unary(
-                '/weather.WeatherService/GetDaily',
+        self.GetWeather = channel.unary_unary(
+                '/weather.WeatherService/GetWeather',
                 request_serializer=weather__pb2.Request.SerializeToString,
                 response_deserializer=weather__pb2.Response.FromString,
                 _registered_method=True)
@@ -44,9 +44,8 @@ class WeatherServiceStub(object):
 class WeatherServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetDaily(self, request, context):
-        """JWT + x-api-key
-        """
+    def GetWeather(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -54,8 +53,8 @@ class WeatherServiceServicer(object):
 
 def add_WeatherServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetDaily': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetDaily,
+            'GetWeather': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetWeather,
                     request_deserializer=weather__pb2.Request.FromString,
                     response_serializer=weather__pb2.Response.SerializeToString,
             ),
@@ -71,7 +70,7 @@ class WeatherService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetDaily(request,
+    def GetWeather(request,
             target,
             options=(),
             channel_credentials=None,
@@ -84,7 +83,7 @@ class WeatherService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/weather.WeatherService/GetDaily',
+            '/weather.WeatherService/GetWeather',
             weather__pb2.Request.SerializeToString,
             weather__pb2.Response.FromString,
             options,
