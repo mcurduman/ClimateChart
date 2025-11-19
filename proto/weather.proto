@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package weather;
+
+import "google/api/annotations.proto";
+
+service WeatherService {
+  // JWT + x-api-key
+  rpc GetWeather (Request) returns (Response) {
+    option (google.api.http) = {
+      get: "/v1/weather/"
+      additional_bindings { get: "/v1/weather/{city}" }
+    };
+  }
+}
+
+message Request {
+  string city = 1;
+}
+
+message Response {
+  string city     = 1;
+  string timezone = 2;
+  repeated Record records = 3;
+}
+
+message Record {
+  string date = 1;
+  double temperature_2m_max_c           = 2;
+  double temperature_2m_min_c           = 3;
+  double precipitation_sum_mm           = 4;
+  double pressure_msl_mean_hpa          = 5;
+  double wind_speed_10m_max_kmh         = 6;
+  int32  relative_humidity_2m_max_pct   = 7;
+}
