@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package user;
+
+import "google/api/annotations.proto";
+
+service UserService {
+  // --- Public (no auth) ---
+  rpc StartEmailVerification (StartEmailVerificationRequest) returns (StartEmailVerificationResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/start-email-verification"
+      body: "*"
+    };
+  }
+
+  rpc ConfirmEmail (ConfirmEmailRequest) returns (ConfirmEmailResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/confirm-email"
+      body: "*"
+    };
+  }
+
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/login"
+      body: "*"
+    };
+  }
+
+  rpc CreateApiKey (CreateApiKeyRequest) returns (CreateApiKeyResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/api-keys"
+      body: "*"
+    };
+  }
+
+  rpc ListApiKeys (ListApiKeysRequest) returns (ListApiKeysResponse) {
+    option (google.api.http) = {
+      get: "/v1/user/api-keys"
+    };
+  }
+
+  rpc GetMe (GetMeRequest) returns (GetMeResponse) {
+    option (google.api.http) = {
+      get: "/v1/user/me"
+    };
+  }
+}
+
+// Sign-up
+message StartEmailVerificationRequest { string email = 1; string username = 2; string password = 3; }
+message StartEmailVerificationResponse { string user_id = 1; string message = 2; }
+
+// Confirm
+message ConfirmEmailRequest { string user_id = 1; string code = 2; }
+message ConfirmEmailResponse { bool success = 1; }
+
+// Auth
+message LoginRequest { string username = 1; string password = 2; }
+message LoginResponse {
+  string user_id = 1;
+  string username = 2;
+}
+
+// API keys
+enum ApiKeyStatus { API_KEY_STATUS_UNSPECIFIED = 0; ACTIVE = 1; EXPIRED = 2; REVOKED = 3; }
+
+message CreateApiKeyRequest { string label = 1; string scope = 2; int32 ttl_seconds = 3; }
+message CreateApiKeyResponse { string api_key = 1; string key_id = 2; string expires_at = 3; }
+
+message ListApiKeysRequest {}
+message ApiKeyInfo {
+  string key_id = 1;
+  string label = 2;
+  string scope = 3;
+  ApiKeyStatus status = 4;
+  string created_at = 5;
+  string expires_at = 6;
+  string last_used_at = 7;
+}
+message ListApiKeysResponse { repeated ApiKeyInfo keys = 1; }
+
+// Self
+message GetMeRequest {}
+message GetMeResponse {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+  bool email_verified = 4;
+  string created_at = 5;
+}

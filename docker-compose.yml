@@ -1,0 +1,22 @@
+services:
+  grpcapp:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: grpcapp
+    ports:
+      - "9092:9092"
+
+  envoy:
+    image: envoyproxy/envoy:v1.31-latest
+    container_name: envoy
+    depends_on:
+      - grpcapp
+    ports:
+      - "8089:8089"
+      - "9099:9099"
+    volumes:
+      - ./envoy/envoy_grpc_to_json.yaml:/etc/envoy/envoy.yaml:ro
+      - ./apis.pb:/data/apis.pb:ro
+    command: ["envoy", "-c", "/etc/envoy/envoy.yaml", "--log-level", "info"]
+    restart: unless-stopped

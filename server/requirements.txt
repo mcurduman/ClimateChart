@@ -1,4 +1,9 @@
-grpcio==1.66.1
-grpcio-tools==1.66.1
-httpx==0.27.2
-python-dotenv==1.0.1
+grpcio
+grpcio-tools
+protobuf
+googleapis-common-protos
+uvicorn
+pydantic
+PyJWT
+python-dotenv
+pydantic-settings
