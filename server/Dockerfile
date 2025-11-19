@@ -6,6 +6,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY proto/  ./proto
 COPY server/ ./server
+COPY server/.env /app/.env
 
 RUN python -m grpc_tools.protoc \
     -I proto \

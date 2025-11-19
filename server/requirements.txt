@@ -5,3 +5,5 @@ googleapis-common-protos
 uvicorn
 pydantic
 PyJWT
+python-dotenv
+pydantic-settings
