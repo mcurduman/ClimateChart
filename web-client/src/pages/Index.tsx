@@ -21,21 +21,21 @@ const Index = () => {
             <CardHeader className="text-center">
               <TrendingUp className="h-8 w-8 text-primary mb-2 mx-auto" />
               <CardTitle className="text-lg">Temperature Trends</CardTitle>
-              <CardDescription>Visualize 2-week temperature data</CardDescription>
+                <CardDescription></CardDescription>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="text-center">
               <Cloud className="h-8 w-8 text-primary mb-2 mx-auto" />
               <CardTitle className="text-lg">City Analysis</CardTitle>
-              <CardDescription>Search any city worldwide</CardDescription>
+                <CardDescription></CardDescription>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="text-center">
               <Shield className="h-8 w-8 text-primary mb-2 mx-auto" />
               <CardTitle className="text-lg">API Access</CardTitle>
-              <CardDescription>Generate your API keys</CardDescription>
+                <CardDescription></CardDescription>
             </CardHeader>
           </Card>
         </div>

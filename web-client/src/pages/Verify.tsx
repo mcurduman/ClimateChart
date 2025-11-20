@@ -53,8 +53,6 @@ const Verify = () => {
                         Enter the verification code sent to your email
                         {currentUser && (
                             <div className="mt-2 rounded p-2 text-xs">
-                                <strong>Demo Code:</strong> {currentUser.verificationCode}
-                            </div>
                         )}
                     </CardDescription>
                 </CardHeader>
