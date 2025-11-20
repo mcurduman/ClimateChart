@@ -7,6 +7,7 @@ from httpx import HTTPError, TimeoutException
 import logging 
 from repositories.weather_repository import WeatherRepository
 from core.config import get_settings
+from models.daily_weather_data import DailyWeatherData
 
 logger = logging.getLogger(__name__)
 
@@ -30,26 +31,17 @@ class WeatherService:
             logger.error(f"[WeatherService] Error caching records: {e}")
             raise
 
-    def _build_daily_records(
-        self,
-        times,
-        daily_temperature_2m_max,
-        daily_temperature_2m_min,
-        daily_precipitation_sum,
-        daily_pressure_msl_mean,
-        daily_wind_speed_10m_max,
-        daily_relative_humidity_2m_max
-    ):
+    def _build_daily_records(self, daily_data: DailyWeatherData):
         records = []
-        for i in range(len(times)):
+        for i in range(len(daily_data.times)):
             record = {
-                "date": times[i],
-                "temperature_2m_max_c": float(daily_temperature_2m_max[i]) if i < len(daily_temperature_2m_max) else None,
-                "temperature_2m_min_c": float(daily_temperature_2m_min[i]) if i < len(daily_temperature_2m_min) else None,
-                "precipitation_sum_mm": float(daily_precipitation_sum[i]) if i < len(daily_precipitation_sum) else None,
-                "pressure_msl_mean_hpa": float(daily_pressure_msl_mean[i]) if i < len(daily_pressure_msl_mean) else None,
-                "wind_speed_10m_max_kmh": float(daily_wind_speed_10m_max[i]) if i < len(daily_wind_speed_10m_max) else None,
-                "relative_humidity_2m_max_pct": int(daily_relative_humidity_2m_max[i]) if i < len(daily_relative_humidity_2m_max) else None,
+                "date": daily_data.times[i],
+                "temperature_2m_max_c": float(daily_data.daily_temperature_2m_max[i]) if i < len(daily_data.daily_temperature_2m_max) else None,
+                "temperature_2m_min_c": float(daily_data.daily_temperature_2m_min[i]) if i < len(daily_data.daily_temperature_2m_min) else None,
+                "precipitation_sum_mm": float(daily_data.daily_precipitation_sum[i]) if i < len(daily_data.daily_precipitation_sum) else None,
+                "pressure_msl_mean_hpa": float(daily_data.daily_pressure_msl_mean[i]) if i < len(daily_data.daily_pressure_msl_mean) else None,
+                "wind_speed_10m_max_kmh": float(daily_data.daily_wind_speed_10m_max[i]) if i < len(daily_data.daily_wind_speed_10m_max) else None,
+                "relative_humidity_2m_max_pct": int(daily_data.daily_relative_humidity_2m_max[i]) if i < len(daily_data.daily_relative_humidity_2m_max) else None,
             }
             records.append(record)
         return records
@@ -73,16 +65,17 @@ class WeatherService:
             )
             times = [d.strftime("%Y-%m-%d") for d in dates]
 
-            records = self._build_daily_records(
-                times,
-                daily_temperature_2m_max,
-                daily_temperature_2m_min,
-                daily_precipitation_sum,
-                daily_pressure_msl_mean,
-                daily_wind_speed_10m_max,
-                daily_relative_humidity_2m_max
+            daily_data = DailyWeatherData(
+                times=times,
+                daily_temperature_2m_max=daily_temperature_2m_max.tolist(),
+                daily_temperature_2m_min=daily_temperature_2m_min.tolist(),
+                daily_precipitation_sum=daily_precipitation_sum.tolist(),
+                daily_pressure_msl_mean=daily_pressure_msl_mean.tolist(),
+                daily_wind_speed_10m_max=daily_wind_speed_10m_max.tolist(),
+                daily_relative_humidity_2m_max=daily_relative_humidity_2m_max.tolist(),
             )
-
+            
+            records = self._build_daily_records(daily_data)
             return records
 
         except (AttributeError, IndexError, ValueError, TypeError) as e:
