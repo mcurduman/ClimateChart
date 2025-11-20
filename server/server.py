@@ -1,25 +1,36 @@
-import grpc
-from concurrent import futures
+import asyncio
+import grpc.aio
 from interceptors.auth_interceptor import AuthInterceptor
-from services.weather_service import WeatherService
+from interceptors.log_interceptor import LogInterceptor
+from handlers.weather_service_servicer import WeatherServiceServicer
 from proto.generated import weather_pb2_grpc
+import logging 
 
-print("Starting server...", flush=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] %(levelname)s - %(name)s %(message)s",
+    handlers=[
+        logging.FileHandler("logs/app.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
-def serve():
-    print("Trying to start gRPC server...", flush=True)
+logger.info("Starting server...")
+
+async def serve():
+    logger.info("Trying to start gRPC aio server...")
     try:
-        server = grpc.server(
-            futures.ThreadPoolExecutor(max_workers=10),
-            interceptors=[AuthInterceptor()],
+        server = grpc.aio.server(
+            interceptors=[AuthInterceptor(), LogInterceptor()]
         )
-        weather_pb2_grpc.add_WeatherServiceServicer_to_server(WeatherService(), server)
+        weather_pb2_grpc.add_WeatherServiceServicer_to_server(WeatherServiceServicer(), server)
         server.add_insecure_port("[::]:9092")
-        print("[gRPC] Server running on port 9092...", flush=True)
-        server.start()
-        server.wait_for_termination()
+        logger.info("[gRPC] aio server running on port 9092...")
+        await server.start()
+        await server.wait_for_termination()
     except Exception as e:
-        print("Exception during server startup:", repr(e), flush=True)
+        logger.exception(f"Exception during aio server startup: {repr(e)}")
 
 if __name__ == "__main__":
-    serve()
+    asyncio.run(serve())
