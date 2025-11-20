@@ -12,9 +12,8 @@ RUN python -m grpc_tools.protoc \
     -I proto \
     --python_out=proto/generated \
     --grpc_python_out=proto/generated \
-    proto/user.proto proto/weather.proto
-
-RUN rm -rf proto/google
+    proto/user.proto proto/weather.proto && \
+    rm -rf proto/google
 
 ENV PYTHONPATH=/app:/app/server:/app/proto:/app/proto/generated
 

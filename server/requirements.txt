@@ -7,3 +7,14 @@ pydantic
 PyJWT
 python-dotenv
 pydantic-settings
+pymongo
+asyncio
+httpx
+requests-cache
+retry-requests
+openmeteo-requests
+pandas
+dnspython
+pymongo[serv]
+pymongo
+pymongo[async]

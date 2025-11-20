@@ -6,7 +6,17 @@ services:
     container_name: grpcapp
     ports:
       - "9092:9092"
-
+    volumes:
+      - ./logs:/app/logs
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: climatechart
+    volumes:
+      - mongo_data:/data/db
   envoy:
     image: envoyproxy/envoy:v1.31-latest
     container_name: envoy
@@ -19,4 +29,7 @@ services:
       - ./envoy/envoy_grpc_to_json.yaml:/etc/envoy/envoy.yaml:ro
       - ./apis.pb:/data/apis.pb:ro
     command: ["envoy", "-c", "/etc/envoy/envoy.yaml", "--log-level", "info"]
-    restart: unless-stopped
+
+volumes:
+  mongo_data:
+

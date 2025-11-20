@@ -14,8 +14,10 @@ class Settings(BaseSettings):
 	EXPECTED_API_KEY: str
 	PUBLIC_METHODS: str = ""
 	API_KEY_METHODS: str = ""
+	DB_URL: str
+	API_URL: str
 
-	model_config = SettingsConfigDict(env_file=".env")
+	model_config = SettingsConfigDict(env_file=".env", env_nested_delimiter="__")
 	
 	def __init__(self, **values):
 		super().__init__(**values)
