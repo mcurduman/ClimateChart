@@ -25,7 +25,7 @@ const WeatherChartTable: React.FC<WeatherChartTableProps> = ({ data, todayISO })
           {data.map((rec: any) => (
             <tr
               key={rec.xKey}
-              className={rec.date === todayISO ? "bg-yellow-100 font-bold" : "hover:bg-gray-50 transition-colors"}
+              className={rec.xKey === todayISO ? "bg-yellow-100 font-bold" : "hover:bg-gray-50 transition-colors"}
             >
               <td className="py-3 px-5 border-b">{rec.date}</td>
               <td className="py-3 px-5 border-b">{rec.temperature_2m_max}</td>

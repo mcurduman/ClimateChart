@@ -40,7 +40,9 @@ const fmtLabel = (iso: string) => {
 };
 
 const WeatherChart = ({ data, city }: WeatherChartProps) => {
-  const todayXKey = data.find((row: ChartRow) => row.date === todayISO)?.xKey;
+  console.log("WeatherChart xKey values:", data.map(row => row.xKey));
+  console.log("WeatherChart todayISO:", todayISO);
+  const todayXKey = data.find((row: ChartRow) => row.xKey === todayISO)?.xKey;
   const [chartType, setChartType] = useState<"line" | "bar" | "area">("line");
   const [showGrid, setShowGrid] = useState(true);
   const [showDots, setShowDots] = useState(true);

@@ -26,7 +26,7 @@ type ApiResponse = {
 };
 
 const API_BASE = "http://localhost:8089/v1/weather";
-// WIP user will have to enter his key
+// WIP user will have to enter his keyar 
 const API_KEY = "your_secret_key";
 
 const parseYMDorISO = (s: string) => {
