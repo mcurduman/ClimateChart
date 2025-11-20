@@ -6,6 +6,7 @@ import Auth from "@/pages/Auth";
 import Verify from "@/pages/Verify";
 import NotFound from "@/pages/NotFound";
 import Index from "@/pages/Index";
+import Dashboard from '@/pages/Dashboard';
 
 const queryClient = new QueryClient();
 
@@ -17,8 +18,10 @@ const App = () => (
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Index />} />
+
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
