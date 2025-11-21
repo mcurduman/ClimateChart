@@ -17,6 +17,10 @@ class Settings(BaseSettings):
 	DB_URL: str
 	API_URL: str
 
+	DEFAULT_SENDER: str
+	PASSWORD: str
+	TEMPLATE_UUID: str
+
 	model_config = SettingsConfigDict(env_file=".env", env_nested_delimiter="__")
 	
 	def __init__(self, **values):

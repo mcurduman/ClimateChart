@@ -26,8 +26,6 @@ type ApiResponse = {
 };
 
 const API_BASE = "http://localhost:8089/v1/weather";
-// WIP user will have to enter his keyar 
-const API_KEY = "your_secret_key";
 
 const parseYMDorISO = (s: string) => {
   const iso = s.slice(0, 10);
@@ -88,6 +86,7 @@ const Dashboard = () => {
   const [weatherData, setWeatherData] = useState<ChartRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [apiKey, setApiKey] = useState("");
 
   useEffect(() => {
     const user = localStorage.getItem("climateapp_currentUser");
@@ -102,8 +101,17 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/${encodeURIComponent(cityName)}`, {
-        headers: { "x-api-key": API_KEY },
+        headers: {
+          "x-api-key": apiKey,
+          "x-user-email": currentUser?.email || ""
+        },
       });
+      if (res.status === 401) {
+        toast.error("Unauthorized: Invalid API key or email.");
+        setWeatherData([]);
+        setLoading(false);
+        return;
+      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const payload: ApiResponse = await res.json();
 
@@ -153,6 +161,21 @@ const Dashboard = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex gap-4">
                 <div className="flex-1 space-y-2">
+                  <Label htmlFor="apiKey">API Key</Label>
+                  <Input
+                    id="apiKey"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="Enter your API key"
+                    required
+                  />
+                  {!apiKey && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      You don't have an API key? <span className="underline cursor-pointer text-blue-600" onClick={() => navigate('/account')}>Go to your account and generate one.</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 space-y-2">
                   <Label htmlFor="city">City</Label>
                   <Input
                     id="city"
@@ -163,7 +186,7 @@ const Dashboard = () => {
                   />
                 </div>
                 <div className="flex items-end">
-                  <Button type="submit" disabled={loading}>
+                  <Button type="submit" disabled={loading || !apiKey}>
                     {loading ? "Loading..." : "Fetch Weather Data"}
                   </Button>
                 </div>

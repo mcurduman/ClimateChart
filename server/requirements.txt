@@ -18,3 +18,4 @@ dnspython
 pymongo[serv]
 pymongo
 pymongo[async]
+mailtrap

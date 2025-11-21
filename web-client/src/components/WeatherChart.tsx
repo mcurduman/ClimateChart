@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Tooltip } from "recharts";
 import { Card } from "@/components/ui/card";
 import WeatherChartControls from "./WeatherChartControls";

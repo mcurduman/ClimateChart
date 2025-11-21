@@ -7,6 +7,7 @@ import Verify from "@/pages/Verify";
 import NotFound from "@/pages/NotFound";
 import Index from "@/pages/Index";
 import Dashboard from '@/pages/Dashboard';
+import Account from '@/pages/Account';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/account" element={<Account />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Index />} />
 
