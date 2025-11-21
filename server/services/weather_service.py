@@ -22,6 +22,7 @@ class WeatherService:
     async def save_records(self, records, city, fetch_date):
         doc = {
             "city": city,
+            "date": fetch_date,
             "fetch_date": fetch_date,
             "records": records
         }
@@ -32,10 +33,10 @@ class WeatherService:
             raise
 
     def _build_daily_records(self, daily_data: DailyWeatherData):
-        records = []
+        records = {}
         for i in range(len(daily_data.times)):
+            date_key = daily_data.times[i]
             record = {
-                "date": daily_data.times[i],
                 "temperature_2m_max_c": float(daily_data.daily_temperature_2m_max[i]) if i < len(daily_data.daily_temperature_2m_max) else None,
                 "temperature_2m_min_c": float(daily_data.daily_temperature_2m_min[i]) if i < len(daily_data.daily_temperature_2m_min) else None,
                 "precipitation_sum_mm": float(daily_data.daily_precipitation_sum[i]) if i < len(daily_data.daily_precipitation_sum) else None,
@@ -43,7 +44,7 @@ class WeatherService:
                 "wind_speed_10m_max_kmh": float(daily_data.daily_wind_speed_10m_max[i]) if i < len(daily_data.daily_wind_speed_10m_max) else None,
                 "relative_humidity_2m_max_pct": int(daily_data.daily_relative_humidity_2m_max[i]) if i < len(daily_data.daily_relative_humidity_2m_max) else None,
             }
-            records.append(record)
+            records[date_key] = record
         return records
 
     def parse_daily_response(self, response) -> list:

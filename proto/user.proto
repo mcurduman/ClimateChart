@@ -6,9 +6,10 @@ import "google/api/annotations.proto";
 
 service UserService {
   // --- Public (no auth) ---
-  rpc StartEmailVerification (StartEmailVerificationRequest) returns (StartEmailVerificationResponse) {
+  // Sign up new user (name, email, password)
+  rpc SignUp (SignUpRequest) returns (SignUpResponse) {
     option (google.api.http) = {
-      post: "/v1/user/start-email-verification"
+      post: "/v1/user/sign-up"
       body: "*"
     };
   }
@@ -20,6 +21,13 @@ service UserService {
     };
   }
 
+  rpc SendVerificationEmail (SendVerificationEmailRequest) returns (SendVerificationEmailResponse) {
+    option (google.api.http) = {
+      post: "/v1/user/send-verification-email"
+      body: "*"
+    };
+  }
+
   rpc Login (LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/v1/user/login"
@@ -27,65 +35,73 @@ service UserService {
     };
   }
 
-  rpc CreateApiKey (CreateApiKeyRequest) returns (CreateApiKeyResponse) {
+  rpc CreateApiKey (CreateApiKeyRequest) returns (ApiKeyInfo) {
     option (google.api.http) = {
       post: "/v1/user/api-keys"
       body: "*"
     };
   }
 
-  rpc ListApiKeys (ListApiKeysRequest) returns (ListApiKeysResponse) {
+  rpc GetApiKey (GetApiKeyRequest) returns (ApiKeyInfo) {
     option (google.api.http) = {
-      get: "/v1/user/api-keys"
+      get: "/v1/user/api-key"
+      additional_bindings {
+        get: "/v1/user/api-key/{user_email}"
+      }
     };
   }
 
   rpc GetMe (GetMeRequest) returns (GetMeResponse) {
     option (google.api.http) = {
       get: "/v1/user/me"
+      additional_bindings {
+        get: "/v1/user/me/{email}"
+      }
     };
   }
 }
 
 // Sign-up
-message StartEmailVerificationRequest { string email = 1; string username = 2; string password = 3; }
-message StartEmailVerificationResponse { string user_id = 1; string message = 2; }
+message SignUpRequest { string name = 1; string email = 2; string password = 3; }
+message SignUpResponse { string user_id = 1; }
+
+message SendVerificationEmailRequest {
+  string email = 1;
+}
+
+message SendVerificationEmailResponse {
+  bool success = 1;
+  string message = 2;
+}
 
 // Confirm
-message ConfirmEmailRequest { string user_id = 1; string code = 2; }
+message ConfirmEmailRequest { string email = 1; string code = 2; }
 message ConfirmEmailResponse { bool success = 1; }
 
 // Auth
-message LoginRequest { string username = 1; string password = 2; }
+message LoginRequest { string email = 1; string password = 2; }
 message LoginResponse {
   string user_id = 1;
-  string username = 2;
+  string name = 2;
+  string email = 3;
 }
 
-// API keys
-enum ApiKeyStatus { API_KEY_STATUS_UNSPECIFIED = 0; ACTIVE = 1; EXPIRED = 2; REVOKED = 3; }
+message CreateApiKeyRequest { string user_email = 1; string created_at = 2; }
 
-message CreateApiKeyRequest { string label = 1; string scope = 2; int32 ttl_seconds = 3; }
-message CreateApiKeyResponse { string api_key = 1; string key_id = 2; string expires_at = 3; }
-
-message ListApiKeysRequest {}
+message GetApiKeyRequest { string user_email = 1;}
 message ApiKeyInfo {
-  string key_id = 1;
-  string label = 2;
-  string scope = 3;
-  ApiKeyStatus status = 4;
-  string created_at = 5;
-  string expires_at = 6;
-  string last_used_at = 7;
+  string user_email = 1;
+  string value = 2;
+  string created_at = 3;
 }
-message ListApiKeysResponse { repeated ApiKeyInfo keys = 1; }
+
+message GetApiKeyResponse { ApiKeyInfo key = 1; }
 
 // Self
-message GetMeRequest {}
+message GetMeRequest { string email = 1; }
 message GetMeResponse {
   string user_id = 1;
-  string username = 2;
+  string name = 2;
   string email = 3;
   bool email_verified = 4;
-  string created_at = 5;
 }

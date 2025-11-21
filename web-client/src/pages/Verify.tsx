@@ -24,23 +24,46 @@ const Verify = () => {
         }
     }, [navigate]);
 
-    const handleVerify = (e: React.FormEvent) => {
+    const handleVerify = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (code === currentUser?.verificationCode) {
-            const users = JSON.parse(localStorage.getItem("climateapp_users") || "[]");
-            const updatedUsers = users.map((u: any) =>
-                u.id === currentUser.id ? { ...u, verified: true } : u
-            );
-
-            localStorage.setItem("climateapp_users", JSON.stringify(updatedUsers));
+        if (!currentUser) return;
+        try {
+            const res = await fetch("http://localhost:8089/v1/user/confirm-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: currentUser.email,
+                    code,
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || "Invalid verification code.");
+            }
             const updatedUser = { ...currentUser, verified: true };
             localStorage.setItem("climateapp_currentUser", JSON.stringify(updatedUser));
-
             toast.success("Account verified!", { description: "Your account has been successfully verified." });
-            navigate("/dashboard");
-        } else {
-            toast.error("Verification failed", { description: "Invalid verification code." });
+            navigate("/account");
+        } catch (err: any) {
+            toast.error("Verification failed", { description: err?.message || "Invalid verification code." });
+        }
+    };
+
+    const handleRequestCode = async () => {
+        if (!currentUser) return;
+        try {
+            const res = await fetch("http://localhost:8089/v1/user/send-verification-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: currentUser.email }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || "Failed to send verification code.");
+            }
+            toast.success("Verification code sent!", { description: data.message || "Check your email." });
+        } catch (err: any) {
+            toast.error("Failed to send code", { description: err?.message || "Try again later." });
         }
     };
 
@@ -52,9 +75,7 @@ const Verify = () => {
                     <CardDescription>
                         Enter the verification code sent to your email
                         {currentUser && (
-                            <div className="mt-2 rounded p-2 text-xs">
-                                <strong>Demo Code:</strong> {currentUser.verificationCode}
-                            </div>
+                            <>: <strong>{currentUser.email}</strong></>
                         )}
                     </CardDescription>
                 </CardHeader>
@@ -75,6 +96,14 @@ const Verify = () => {
                         <Button
                             type="button"
                             variant="outline"
+                            className="w-full"
+                            onClick={handleRequestCode}
+                        >
+                            Request Verification Code
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="ghost"
                             className="w-full"
                             onClick={() => navigate("/dashboard")}
                         >

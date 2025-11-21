@@ -34,15 +34,20 @@ class UserServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.StartEmailVerification = channel.unary_unary(
-                '/user.UserService/StartEmailVerification',
-                request_serializer=user__pb2.StartEmailVerificationRequest.SerializeToString,
-                response_deserializer=user__pb2.StartEmailVerificationResponse.FromString,
+        self.SignUp = channel.unary_unary(
+                '/user.UserService/SignUp',
+                request_serializer=user__pb2.SignUpRequest.SerializeToString,
+                response_deserializer=user__pb2.SignUpResponse.FromString,
                 _registered_method=True)
         self.ConfirmEmail = channel.unary_unary(
                 '/user.UserService/ConfirmEmail',
                 request_serializer=user__pb2.ConfirmEmailRequest.SerializeToString,
                 response_deserializer=user__pb2.ConfirmEmailResponse.FromString,
+                _registered_method=True)
+        self.SendVerificationEmail = channel.unary_unary(
+                '/user.UserService/SendVerificationEmail',
+                request_serializer=user__pb2.SendVerificationEmailRequest.SerializeToString,
+                response_deserializer=user__pb2.SendVerificationEmailResponse.FromString,
                 _registered_method=True)
         self.Login = channel.unary_unary(
                 '/user.UserService/Login',
@@ -52,12 +57,12 @@ class UserServiceStub(object):
         self.CreateApiKey = channel.unary_unary(
                 '/user.UserService/CreateApiKey',
                 request_serializer=user__pb2.CreateApiKeyRequest.SerializeToString,
-                response_deserializer=user__pb2.CreateApiKeyResponse.FromString,
+                response_deserializer=user__pb2.ApiKeyInfo.FromString,
                 _registered_method=True)
-        self.ListApiKeys = channel.unary_unary(
-                '/user.UserService/ListApiKeys',
-                request_serializer=user__pb2.ListApiKeysRequest.SerializeToString,
-                response_deserializer=user__pb2.ListApiKeysResponse.FromString,
+        self.GetApiKey = channel.unary_unary(
+                '/user.UserService/GetApiKey',
+                request_serializer=user__pb2.GetApiKeyRequest.SerializeToString,
+                response_deserializer=user__pb2.ApiKeyInfo.FromString,
                 _registered_method=True)
         self.GetMe = channel.unary_unary(
                 '/user.UserService/GetMe',
@@ -69,14 +74,21 @@ class UserServiceStub(object):
 class UserServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def StartEmailVerification(self, request, context):
+    def SignUp(self, request, context):
         """--- Public (no auth) ---
+        Sign up new user (name, email, password)
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ConfirmEmail(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendVerificationEmail(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -94,7 +106,7 @@ class UserServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListApiKeys(self, request, context):
+    def GetApiKey(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -109,15 +121,20 @@ class UserServiceServicer(object):
 
 def add_UserServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'StartEmailVerification': grpc.unary_unary_rpc_method_handler(
-                    servicer.StartEmailVerification,
-                    request_deserializer=user__pb2.StartEmailVerificationRequest.FromString,
-                    response_serializer=user__pb2.StartEmailVerificationResponse.SerializeToString,
+            'SignUp': grpc.unary_unary_rpc_method_handler(
+                    servicer.SignUp,
+                    request_deserializer=user__pb2.SignUpRequest.FromString,
+                    response_serializer=user__pb2.SignUpResponse.SerializeToString,
             ),
             'ConfirmEmail': grpc.unary_unary_rpc_method_handler(
                     servicer.ConfirmEmail,
                     request_deserializer=user__pb2.ConfirmEmailRequest.FromString,
                     response_serializer=user__pb2.ConfirmEmailResponse.SerializeToString,
+            ),
+            'SendVerificationEmail': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendVerificationEmail,
+                    request_deserializer=user__pb2.SendVerificationEmailRequest.FromString,
+                    response_serializer=user__pb2.SendVerificationEmailResponse.SerializeToString,
             ),
             'Login': grpc.unary_unary_rpc_method_handler(
                     servicer.Login,
@@ -127,12 +144,12 @@ def add_UserServiceServicer_to_server(servicer, server):
             'CreateApiKey': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateApiKey,
                     request_deserializer=user__pb2.CreateApiKeyRequest.FromString,
-                    response_serializer=user__pb2.CreateApiKeyResponse.SerializeToString,
+                    response_serializer=user__pb2.ApiKeyInfo.SerializeToString,
             ),
-            'ListApiKeys': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListApiKeys,
-                    request_deserializer=user__pb2.ListApiKeysRequest.FromString,
-                    response_serializer=user__pb2.ListApiKeysResponse.SerializeToString,
+            'GetApiKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetApiKey,
+                    request_deserializer=user__pb2.GetApiKeyRequest.FromString,
+                    response_serializer=user__pb2.ApiKeyInfo.SerializeToString,
             ),
             'GetMe': grpc.unary_unary_rpc_method_handler(
                     servicer.GetMe,
@@ -151,7 +168,7 @@ class UserService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def StartEmailVerification(request,
+    def SignUp(request,
             target,
             options=(),
             channel_credentials=None,
@@ -164,9 +181,9 @@ class UserService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/user.UserService/StartEmailVerification',
-            user__pb2.StartEmailVerificationRequest.SerializeToString,
-            user__pb2.StartEmailVerificationResponse.FromString,
+            '/user.UserService/SignUp',
+            user__pb2.SignUpRequest.SerializeToString,
+            user__pb2.SignUpResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -194,6 +211,33 @@ class UserService(object):
             '/user.UserService/ConfirmEmail',
             user__pb2.ConfirmEmailRequest.SerializeToString,
             user__pb2.ConfirmEmailResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SendVerificationEmail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/user.UserService/SendVerificationEmail',
+            user__pb2.SendVerificationEmailRequest.SerializeToString,
+            user__pb2.SendVerificationEmailResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -247,7 +291,7 @@ class UserService(object):
             target,
             '/user.UserService/CreateApiKey',
             user__pb2.CreateApiKeyRequest.SerializeToString,
-            user__pb2.CreateApiKeyResponse.FromString,
+            user__pb2.ApiKeyInfo.FromString,
             options,
             channel_credentials,
             insecure,
@@ -259,7 +303,7 @@ class UserService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListApiKeys(request,
+    def GetApiKey(request,
             target,
             options=(),
             channel_credentials=None,
@@ -272,9 +316,9 @@ class UserService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/user.UserService/ListApiKeys',
-            user__pb2.ListApiKeysRequest.SerializeToString,
-            user__pb2.ListApiKeysResponse.FromString,
+            '/user.UserService/GetApiKey',
+            user__pb2.GetApiKeyRequest.SerializeToString,
+            user__pb2.ApiKeyInfo.FromString,
             options,
             channel_credentials,
             insecure,

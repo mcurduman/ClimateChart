@@ -1,4 +1,3 @@
-# server/grpc/weather_servicer.py
 from proto.generated import weather_pb2, weather_pb2_grpc
 import grpc
 from services.weather_service import WeatherService
@@ -13,6 +12,8 @@ class WeatherServiceServicer(weather_pb2_grpc.WeatherServiceServicer):
         try:
             records = await svc.get_forecast_by_city(city)
             print("SERVICE DATA:", records)
+            if isinstance(records, dict):
+                records = [{"date": date, **rec} for date, rec in records.items()]
             proto_records = [
                 weather_pb2.Record(
                     date=r.get("date", ""),

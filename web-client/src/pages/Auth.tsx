@@ -15,48 +15,62 @@ const Auth = () => {
     const [signupPassword, setSignupPassword] = useState("");
     const [signupName, setSignupName] = useState("");
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const users = JSON.parse(localStorage.getItem("climateapp_users") || "[]");
-        const user = users.find((u: any) => u.email === loginEmail && u.password === loginPassword);
-
-        if (user) {
-            localStorage.setItem("climateapp_currentUser", JSON.stringify(user));
+        try {
+            const res = await fetch("http://localhost:8089/v1/user/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: loginEmail,
+                    password: loginPassword,
+                }),
+            });
+            if (!res.ok) {
+                let errMsg = "Login failed.";
+                try {
+                    const errData = await res.json();
+                    errMsg = errData.message || errMsg;
+                } catch {
+                }
+                throw new Error(errMsg);
+            }
+            const data = await res.json();
+            localStorage.setItem("climateapp_currentUser", JSON.stringify(data));
             toast.success("Login successful!");
             navigate("/dashboard");
-        } else {
-            toast.error("Invalid email or password.");
+        } catch (err: any) {
+            toast.error("Invalid email or password.", {
+                description: err?.message || "Login failed.",
+            });
         }
     };
 
-    const handleSignup = (e: React.FormEvent) => {
+    const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
-        const users = JSON.parse(localStorage.getItem("climateapp_users") || "[]");
-
-        if (users.some((u: any) => u.email === signupEmail)) {
-            toast.error("Email already exists.", { description: "Please use a different email." });
-            return;
+        try {
+            const res = await fetch("http://localhost:8089/v1/user/sign-up", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: signupName,
+                    email: signupEmail,
+                    password: signupPassword,
+                }),
+            });
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.message || "Sign up failed.");
+            }
+            toast.success("Account created!", {
+                description: "You can now request a verification code.",
+            });
+            navigate("/verify");
+        } catch (err: any) {
+            toast.error("Sign up failed.", {
+                description: err?.message || "Email may already exist.",
+            });
         }
-
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-        const newUser = {
-            id: Date.now().toString(),
-            email: signupEmail,
-            password: signupPassword,
-            name: signupName,
-            verified: false,
-            verificationCode,
-            apiKey: null,
-        };
-
-        users.push(newUser);
-        localStorage.setItem("climateapp_users", JSON.stringify(users));
-        localStorage.setItem("climateapp_currentUser", JSON.stringify(newUser));
-
-        toast.success("", {
-            description: `Verification code: ${verificationCode}`,
-        });
-        navigate("/verify");
     };
 
     return (

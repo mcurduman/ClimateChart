@@ -25,53 +25,55 @@ _sym_db = _symbol_database.Default()
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nuser.proto\x12\x04user\x1a\x1cgoogle/api/annotations.proto\"R\n\x1dStartEmailVerificationRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"B\n\x1eStartEmailVerificationResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"4\n\x13\x43onfirmEmailRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\"\'\n\x14\x43onfirmEmailResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\"2\n\x0cLoginRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"2\n\rLoginResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\"H\n\x13\x43reateApiKeyRequest\x12\r\n\x05label\x18\x01 \x01(\t\x12\r\n\x05scope\x18\x02 \x01(\t\x12\x13\n\x0bttl_seconds\x18\x03 \x01(\x05\"K\n\x14\x43reateApiKeyResponse\x12\x0f\n\x07\x61pi_key\x18\x01 \x01(\t\x12\x0e\n\x06key_id\x18\x02 \x01(\t\x12\x12\n\nexpires_at\x18\x03 \x01(\t\"\x14\n\x12ListApiKeysRequest\"\x9c\x01\n\nApiKeyInfo\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\r\n\x05scope\x18\x03 \x01(\t\x12\"\n\x06status\x18\x04 \x01(\x0e\x32\x12.user.ApiKeyStatus\x12\x12\n\ncreated_at\x18\x05 \x01(\t\x12\x12\n\nexpires_at\x18\x06 \x01(\t\x12\x14\n\x0clast_used_at\x18\x07 \x01(\t\"5\n\x13ListApiKeysResponse\x12\x1e\n\x04keys\x18\x01 \x03(\x0b\x32\x10.user.ApiKeyInfo\"\x0e\n\x0cGetMeRequest\"m\n\rGetMeResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x16\n\x0e\x65mail_verified\x18\x04 \x01(\x08\x12\x12\n\ncreated_at\x18\x05 \x01(\t*T\n\x0c\x41piKeyStatus\x12\x1e\n\x1a\x41PI_KEY_STATUS_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07\x45XPIRED\x10\x02\x12\x0b\n\x07REVOKED\x10\x03\x32\xe3\x04\n\x0bUserService\x12\x91\x01\n\x16StartEmailVerification\x12#.user.StartEmailVerificationRequest\x1a$.user.StartEmailVerificationResponse\",\x82\xd3\xe4\x93\x02&\"!/v1/user/start-email-verification:\x01*\x12h\n\x0c\x43onfirmEmail\x12\x19.user.ConfirmEmailRequest\x1a\x1a.user.ConfirmEmailResponse\"!\x82\xd3\xe4\x93\x02\x1b\"\x16/v1/user/confirm-email:\x01*\x12K\n\x05Login\x12\x12.user.LoginRequest\x1a\x13.user.LoginResponse\"\x19\x82\xd3\xe4\x93\x02\x13\"\x0e/v1/user/login:\x01*\x12\x63\n\x0c\x43reateApiKey\x12\x19.user.CreateApiKeyRequest\x1a\x1a.user.CreateApiKeyResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x11/v1/user/api-keys:\x01*\x12]\n\x0bListApiKeys\x12\x18.user.ListApiKeysRequest\x1a\x19.user.ListApiKeysResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/user/api-keys\x12\x45\n\x05GetMe\x12\x12.user.GetMeRequest\x1a\x13.user.GetMeResponse\"\x13\x82\xd3\xe4\x93\x02\r\x12\x0b/v1/user/meb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nuser.proto\x12\x04user\x1a\x1cgoogle/api/annotations.proto\">\n\rSignUpRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"!\n\x0eSignUpResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\t\"-\n\x1cSendVerificationEmailRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\"A\n\x1dSendVerificationEmailResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"2\n\x13\x43onfirmEmailRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\"\'\n\x14\x43onfirmEmailResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\"/\n\x0cLoginRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"=\n\rLoginResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\"=\n\x13\x43reateApiKeyRequest\x12\x12\n\nuser_email\x18\x01 \x01(\t\x12\x12\n\ncreated_at\x18\x02 \x01(\t\"&\n\x10GetApiKeyRequest\x12\x12\n\nuser_email\x18\x01 \x01(\t\"C\n\nApiKeyInfo\x12\x12\n\nuser_email\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x12\n\ncreated_at\x18\x03 \x01(\t\"2\n\x11GetApiKeyResponse\x12\x1d\n\x03key\x18\x01 \x01(\x0b\x32\x10.user.ApiKeyInfo\"\x1d\n\x0cGetMeRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\"U\n\rGetMeResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x16\n\x0e\x65mail_verified\x18\x04 \x01(\x08\x32\xd1\x05\n\x0bUserService\x12P\n\x06SignUp\x12\x13.user.SignUpRequest\x1a\x14.user.SignUpResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x10/v1/user/sign-up:\x01*\x12h\n\x0c\x43onfirmEmail\x12\x19.user.ConfirmEmailRequest\x1a\x1a.user.ConfirmEmailResponse\"!\x82\xd3\xe4\x93\x02\x1b\"\x16/v1/user/confirm-email:\x01*\x12\x8d\x01\n\x15SendVerificationEmail\x12\".user.SendVerificationEmailRequest\x1a#.user.SendVerificationEmailResponse\"+\x82\xd3\xe4\x93\x02%\" /v1/user/send-verification-email:\x01*\x12K\n\x05Login\x12\x12.user.LoginRequest\x1a\x13.user.LoginResponse\"\x19\x82\xd3\xe4\x93\x02\x13\"\x0e/v1/user/login:\x01*\x12Y\n\x0c\x43reateApiKey\x12\x19.user.CreateApiKeyRequest\x1a\x10.user.ApiKeyInfo\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x11/v1/user/api-keys:\x01*\x12p\n\tGetApiKey\x12\x16.user.GetApiKeyRequest\x1a\x10.user.ApiKeyInfo\"9\x82\xd3\xe4\x93\x02\x33\x12\x10/v1/user/api-keyZ\x1f\x12\x1d/v1/user/api-key/{user_email}\x12\\\n\x05GetMe\x12\x12.user.GetMeRequest\x1a\x13.user.GetMeResponse\"*\x82\xd3\xe4\x93\x02$\x12\x0b/v1/user/meZ\x15\x12\x13/v1/user/me/{email}b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'user_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_USERSERVICE'].methods_by_name['StartEmailVerification']._loaded_options = None
-  _globals['_USERSERVICE'].methods_by_name['StartEmailVerification']._serialized_options = b'\202\323\344\223\002&\"!/v1/user/start-email-verification:\001*'
+  _globals['_USERSERVICE'].methods_by_name['SignUp']._loaded_options = None
+  _globals['_USERSERVICE'].methods_by_name['SignUp']._serialized_options = b'\202\323\344\223\002\025\"\020/v1/user/sign-up:\001*'
   _globals['_USERSERVICE'].methods_by_name['ConfirmEmail']._loaded_options = None
   _globals['_USERSERVICE'].methods_by_name['ConfirmEmail']._serialized_options = b'\202\323\344\223\002\033\"\026/v1/user/confirm-email:\001*'
+  _globals['_USERSERVICE'].methods_by_name['SendVerificationEmail']._loaded_options = None
+  _globals['_USERSERVICE'].methods_by_name['SendVerificationEmail']._serialized_options = b'\202\323\344\223\002%\" /v1/user/send-verification-email:\001*'
   _globals['_USERSERVICE'].methods_by_name['Login']._loaded_options = None
   _globals['_USERSERVICE'].methods_by_name['Login']._serialized_options = b'\202\323\344\223\002\023\"\016/v1/user/login:\001*'
   _globals['_USERSERVICE'].methods_by_name['CreateApiKey']._loaded_options = None
   _globals['_USERSERVICE'].methods_by_name['CreateApiKey']._serialized_options = b'\202\323\344\223\002\026\"\021/v1/user/api-keys:\001*'
-  _globals['_USERSERVICE'].methods_by_name['ListApiKeys']._loaded_options = None
-  _globals['_USERSERVICE'].methods_by_name['ListApiKeys']._serialized_options = b'\202\323\344\223\002\023\022\021/v1/user/api-keys'
+  _globals['_USERSERVICE'].methods_by_name['GetApiKey']._loaded_options = None
+  _globals['_USERSERVICE'].methods_by_name['GetApiKey']._serialized_options = b'\202\323\344\223\0023\022\020/v1/user/api-keyZ\037\022\035/v1/user/api-key/{user_email}'
   _globals['_USERSERVICE'].methods_by_name['GetMe']._loaded_options = None
-  _globals['_USERSERVICE'].methods_by_name['GetMe']._serialized_options = b'\202\323\344\223\002\r\022\013/v1/user/me'
-  _globals['_APIKEYSTATUS']._serialized_start=915
-  _globals['_APIKEYSTATUS']._serialized_end=999
-  _globals['_STARTEMAILVERIFICATIONREQUEST']._serialized_start=50
-  _globals['_STARTEMAILVERIFICATIONREQUEST']._serialized_end=132
-  _globals['_STARTEMAILVERIFICATIONRESPONSE']._serialized_start=134
-  _globals['_STARTEMAILVERIFICATIONRESPONSE']._serialized_end=200
-  _globals['_CONFIRMEMAILREQUEST']._serialized_start=202
-  _globals['_CONFIRMEMAILREQUEST']._serialized_end=254
-  _globals['_CONFIRMEMAILRESPONSE']._serialized_start=256
-  _globals['_CONFIRMEMAILRESPONSE']._serialized_end=295
-  _globals['_LOGINREQUEST']._serialized_start=297
-  _globals['_LOGINREQUEST']._serialized_end=347
-  _globals['_LOGINRESPONSE']._serialized_start=349
-  _globals['_LOGINRESPONSE']._serialized_end=399
-  _globals['_CREATEAPIKEYREQUEST']._serialized_start=401
-  _globals['_CREATEAPIKEYREQUEST']._serialized_end=473
-  _globals['_CREATEAPIKEYRESPONSE']._serialized_start=475
-  _globals['_CREATEAPIKEYRESPONSE']._serialized_end=550
-  _globals['_LISTAPIKEYSREQUEST']._serialized_start=552
-  _globals['_LISTAPIKEYSREQUEST']._serialized_end=572
-  _globals['_APIKEYINFO']._serialized_start=575
-  _globals['_APIKEYINFO']._serialized_end=731
-  _globals['_LISTAPIKEYSRESPONSE']._serialized_start=733
-  _globals['_LISTAPIKEYSRESPONSE']._serialized_end=786
-  _globals['_GETMEREQUEST']._serialized_start=788
-  _globals['_GETMEREQUEST']._serialized_end=802
-  _globals['_GETMERESPONSE']._serialized_start=804
-  _globals['_GETMERESPONSE']._serialized_end=913
-  _globals['_USERSERVICE']._serialized_start=1002
-  _globals['_USERSERVICE']._serialized_end=1613
+  _globals['_USERSERVICE'].methods_by_name['GetMe']._serialized_options = b'\202\323\344\223\002$\022\013/v1/user/meZ\025\022\023/v1/user/me/{email}'
+  _globals['_SIGNUPREQUEST']._serialized_start=50
+  _globals['_SIGNUPREQUEST']._serialized_end=112
+  _globals['_SIGNUPRESPONSE']._serialized_start=114
+  _globals['_SIGNUPRESPONSE']._serialized_end=147
+  _globals['_SENDVERIFICATIONEMAILREQUEST']._serialized_start=149
+  _globals['_SENDVERIFICATIONEMAILREQUEST']._serialized_end=194
+  _globals['_SENDVERIFICATIONEMAILRESPONSE']._serialized_start=196
+  _globals['_SENDVERIFICATIONEMAILRESPONSE']._serialized_end=261
+  _globals['_CONFIRMEMAILREQUEST']._serialized_start=263
+  _globals['_CONFIRMEMAILREQUEST']._serialized_end=313
+  _globals['_CONFIRMEMAILRESPONSE']._serialized_start=315
+  _globals['_CONFIRMEMAILRESPONSE']._serialized_end=354
+  _globals['_LOGINREQUEST']._serialized_start=356
+  _globals['_LOGINREQUEST']._serialized_end=403
+  _globals['_LOGINRESPONSE']._serialized_start=405
+  _globals['_LOGINRESPONSE']._serialized_end=466
+  _globals['_CREATEAPIKEYREQUEST']._serialized_start=468
+  _globals['_CREATEAPIKEYREQUEST']._serialized_end=529
+  _globals['_GETAPIKEYREQUEST']._serialized_start=531
+  _globals['_GETAPIKEYREQUEST']._serialized_end=569
+  _globals['_APIKEYINFO']._serialized_start=571
+  _globals['_APIKEYINFO']._serialized_end=638
+  _globals['_GETAPIKEYRESPONSE']._serialized_start=640
+  _globals['_GETAPIKEYRESPONSE']._serialized_end=690
+  _globals['_GETMEREQUEST']._serialized_start=692
+  _globals['_GETMEREQUEST']._serialized_end=721
+  _globals['_GETMERESPONSE']._serialized_start=723
+  _globals['_GETMERESPONSE']._serialized_end=808
+  _globals['_USERSERVICE']._serialized_start=811
+  _globals['_USERSERVICE']._serialized_end=1532
 # @@protoc_insertion_point(module_scope)

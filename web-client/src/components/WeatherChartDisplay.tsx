@@ -9,7 +9,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   Legend,
   ResponsiveContainer,
   ReferenceLine,
@@ -68,6 +67,44 @@ interface WeatherChartDisplayProps {
   commonTooltip: React.ReactNode;
   todayXKey?: string;
 }
+
+interface DotRendererProps {
+  cx?: number;
+  cy?: number;
+  payload?: any;
+  todayXKey?: string;
+  showDots?: boolean;
+}
+
+const DotRenderer: React.FC<DotRendererProps> = ({ cx, cy, payload, todayXKey, showDots }) => {
+  const isToday = payload?.xKey === todayXKey;
+  if (isToday) {
+    return (
+      <circle
+        cx={cx}
+        cy={cy}
+        r={5}
+        stroke="#f59e42"
+        strokeWidth={3}
+        fill="#fff"
+      />
+    );
+  }
+  return showDots ? <circle cx={cx} cy={cy} r={2} /> : null;
+};
+
+const LineDotRenderer = (
+  showDots: boolean,
+  todayXKey?: string
+) => (p: any) => (
+  <DotRenderer
+    cx={p.cx}
+    cy={p.cy}
+    payload={p.payload}
+    todayXKey={todayXKey}
+    showDots={showDots}
+  />
+);
 
 const WeatherChartDisplay: React.FC<WeatherChartDisplayProps> = ({
   chartType,
@@ -151,22 +188,7 @@ const WeatherChartDisplay: React.FC<WeatherChartDisplayProps> = ({
               isAnimationActive={animate}
               animationDuration={600}
               animationEasing="ease-in-out"
-              dot={(p: any) => {
-                const isToday = p?.payload?.xKey === todayXKey;
-                if (isToday) {
-                  return (
-                    <circle
-                      cx={p.cx}
-                      cy={p.cy}
-                      r={5}
-                      stroke="#f59e42"
-                      strokeWidth={3}
-                      fill="#fff"
-                    />
-                  );
-                }
-                return showDots ? <circle cx={p.cx} cy={p.cy} r={2} /> : null;
-              }}
+              dot={LineDotRenderer(showDots, todayXKey)}
             />
           ))}
         </LineChart>
